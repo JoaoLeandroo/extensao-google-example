@@ -1,8 +1,18 @@
 const button = document.querySelector(".btn")
-const input = document.querySelector(".input")
 
-button.addEventListener("click", () => {
-    if(input.value === "") return alert("Informe uma URL valida.")
-    alert(input.value)
-    input.value = ""
+const replaceImg = () => {
+    const img = document.querySelectorAll("img")
+    img.forEach((image) => {
+        image.src = ""
+    })
+}
+
+button.addEventListener("click", async () => {
+
+    const [tab] = await chrome.tabs.query({active: true, currentWindow: true})
+
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id},
+        function: replaceImg,
+    })
 })
